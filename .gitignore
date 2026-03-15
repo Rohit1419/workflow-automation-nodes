@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 assigment.txt
-DS_Store
-plan.md
 
+/backend/assigment.txt
+/backend/DS_Store
+/backend/plan.md
