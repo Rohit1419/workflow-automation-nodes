@@ -1,17 +1,10 @@
 import { Handle, Position } from 'reactflow';
+import { useStore } from '../store';
 
-/**
- * BaseNode - Reusable node template
- * 
- * @param {string} id - Node ID
- * @param {object} data - Node data
- * @param {string} data.label - Node title (e.g., "Input", "Output")
- * @param {string} data.description - Node description
- * @param {array} data.handles - Array of handle configurations
- * @param {ReactNode} data.content - Custom content to render
- * @param {object} style - Custom styles
- */
+
 export const BaseNode = ({ id, data, children, style = {} }) => {
+  const { deleteNode } = useStore();
+  
   const {
     label = 'Node',
     description = '',
@@ -32,7 +25,12 @@ export const BaseNode = ({ id, data, children, style = {} }) => {
     gap: '8px',
     fontFamily: 'Arial, sans-serif',
     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    position: 'relative',
     ...style,
+  };
+
+  const handleDelete = () => {
+    deleteNode(id);
   };
 
   return (
@@ -47,6 +45,42 @@ export const BaseNode = ({ id, data, children, style = {} }) => {
           style={handle.style || {}}
         />
       ))}
+
+      {/* Close Button */}
+      <button
+        onClick={handleDelete}
+        style={{
+          position: 'absolute',
+          top: '4px',
+          right: '4px',
+          width: '20px',
+          height: '20px',
+          padding: '0',
+          backgroundColor: '#ef4444',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          transition: 'all 0.2s ease',
+          zIndex: 10,
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = '#dc2626';
+          e.target.style.transform = 'scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = '#ef4444';
+          e.target.style.transform = 'scale(1)';
+        }}
+        title="Delete node"
+      >
+        ×
+      </button>
 
       {/* Node Header */}
       <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#333' }}>

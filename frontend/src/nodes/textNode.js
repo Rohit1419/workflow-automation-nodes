@@ -7,6 +7,7 @@ export const TextNode = ({ id, data }) => {
   const [variables, setVariables] = useState([]);
   const [textHeight, setTextHeight] = useState('100px');
   const [textWidth, setTextWidth] = useState('200px');
+  const [enableMarkdown, setEnableMarkdown] = useState(data?.enableMarkdown || false);
   const textareaRef = useRef(null);
 
   // Extract variables from text using regex pattern {{ variableName }}
@@ -72,55 +73,65 @@ export const TextNode = ({ id, data }) => {
       id={id} 
       data={{
         label: 'Text',
-        description: 'Text input with variables',
+        description: 'Text processing with variables',
         handles: allHandles,
-        bgColor: '#fff3e0',
-        borderColor: '#ff9800',
+        bgColor: '#fffbeb',
+        borderColor: '#f59e0b',
       }}
       style={{
         width: textWidth,
         minHeight: '100px',
-        maxHeight: "auto",
       }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <label style={{ fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          Text:
+      <div className="w-full space-y-3 text-xs">
+        {/* Text Input */}
+        <div className="space-y-1">
+          <label className="block text-gray-700 font-semibold">
+            Text Content
+          </label>
           <textarea 
             ref={textareaRef}
             value={currText} 
             onChange={handleTextChange}
+            placeholder="Enter text with {{variables}}"
+            className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-gray-800 resize-none font-mono text-xs"
             style={{ 
-              padding: '6px', 
-              borderRadius: '4px', 
-              border: '1px solid #ccc', 
-              fontSize: '11px',
               minHeight: '80px',
               maxHeight: '300px',
-              minWidth: '150px',
-              fontFamily: 'monospace',
-              resize: 'none',
-              overflow: 'auto',
               height: textHeight,
-              boxSizing: 'border-box'
+              overflow: 'auto',
             }}
           />
-        </label>
+        </div>
 
-        {/* Display variables info */}
+        {/* Markdown Toggle */}
+        <div className="flex items-center gap-2">
+          <input 
+            type="checkbox" 
+            id={`markdown-${id}`}
+            checked={enableMarkdown} 
+            onChange={(e) => setEnableMarkdown(e.target.checked)}
+            className="w-4 h-4 accent-amber-600 cursor-pointer"
+          />
+          <label 
+            htmlFor={`markdown-${id}`}
+            className="text-gray-700 font-semibold cursor-pointer"
+          >
+            Enable Markdown
+          </label>
+        </div>
+
+        {/* Variables Display */}
         {variables.length > 0 && (
-          <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>
-            <strong>Variables:</strong>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
+          <div className="space-y-2">
+            <div className="text-gray-700 font-semibold">
+              Variables ({variables.length})
+            </div>
+            <div className="flex flex-wrap gap-2">
               {variables.map((varName) => (
                 <div 
                   key={varName}
-                  style={{ 
-                    backgroundColor: '#fff9c4', 
-                    padding: '2px 6px', 
-                    borderRadius: '3px',
-                    fontSize: '10px'
-                  }}
+                  className="bg-amber-100 border border-amber-300 text-gray-800 px-2 py-1 rounded-md text-xs font-mono"
                 >
                   {`{{ ${varName} }}`}
                 </div>
@@ -128,6 +139,14 @@ export const TextNode = ({ id, data }) => {
             </div>
           </div>
         )}
+
+        {/* Info Box */}
+        <div className="bg-amber-50 border border-amber-200 rounded-md p-2 mt-2">
+          <p className="text-gray-700 text-xs leading-relaxed">
+            <strong>Variables:</strong> {variables.length}
+            {enableMarkdown && <span className="text-amber-600"> • Markdown Enabled</span>}
+          </p>
+        </div>
       </div>
     </BaseNode>
   );
