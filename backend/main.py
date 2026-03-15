@@ -1,11 +1,21 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from routes import router
 
-app = FastAPI()
+app = FastAPI(
+    title="VectorShift Pipeline API",
+    description="API for parsing and validating data pipelines",
+    version="1.0.0",
+)
 
-@app.get('/')
-def read_root():
-    return {'Ping': 'Pong'}
+# Enable CORS for frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.get('/pipelines/parse')
-def parse_pipeline(pipeline: str = Form(...)):
-    return {'status': 'parsed'}
+# Include routes
+app.include_router(router)
