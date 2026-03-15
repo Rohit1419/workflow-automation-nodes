@@ -68,3 +68,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+Frontend (submit.js):
+Gets nodes and edges from Zustand store
+Creates JSON payload
+Sends POST request to http://localhost:8000/pipelines/parse
+Shows alert with results: num_nodes, num_edges, is_dag
+Backend (main.py):
+CORS enabled - Allows frontend requests
+Pydantic models - Validates incoming data
+DAG Detection - Uses Kahn's algorithm (topological sort)
+If we can sort ALL nodes without conflicts = DAG ✅
+If nodes remain unsorted = Has cycle ❌
+Returns - JSON with counts and DAG status

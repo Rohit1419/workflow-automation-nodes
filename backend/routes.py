@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from schemas import PipelineData, PipelineResponse
-from services import parse_pipeline
+from schema import PipelineData, PipelineResponse
+from service import parse_pipeline
 
 router = APIRouter()
 

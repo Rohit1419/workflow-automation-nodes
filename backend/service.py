@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 from typing import List
-from schemas import NodeData, EdgeData
+from schema import NodeData, EdgeData
 
 
 def is_dag(nodes: List[NodeData], edges: List[EdgeData]) -> bool:
