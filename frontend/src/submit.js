@@ -36,9 +36,9 @@ export const SubmitButton = () => {
             // Display alert with results
             alert(
                 `Pipeline Analysis:\n\n` +
-                `📊 Nodes: ${data.num_nodes}\n` +
-                `🔗 Edges: ${data.num_edges}\n` +
-                `✓ Valid DAG: ${data.is_dag ? 'Yes ✅' : 'No ❌'}`
+                `Total Nodes: ${data.num_nodes}\n` +
+                `Connected Edges ---|__|---: ${data.num_edges}\n` +
+                `Valid DAG: ${data.is_dag ? 'True ' : 'Oh no! You made a cycle !'}` 
             );
         } catch (error) {
             alert(`Error: ${error.message}`);
